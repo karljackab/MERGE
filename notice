@@ -1,0 +1,9 @@
+context windowsize: 4
+number of negative samples: 9
+samplepath length: 10
+number of paths per node: 10
+embedding dimension: 128
+
+alpha: 1e-4
+beta: 1e-3
+gamma: 1e-5
