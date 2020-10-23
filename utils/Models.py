@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 class AE(nn.Module):
-    def __init__(self, net_xn, node_xn, final_en):
+    def __init__(self, net_xn, node_xn, final_en=128):
         super().__init__()
         self.net_xn = net_xn
         self.node_xn = node_xn
@@ -23,6 +23,7 @@ class AE(nn.Module):
             nn.ReLU(),
             nn.Linear(600, net_xn),
         )
+
         self.NodeEncoder = nn.Sequential(
             nn.Linear(node_xn, 600),
             nn.ReLU(),
