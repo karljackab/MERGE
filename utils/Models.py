@@ -9,35 +9,55 @@ class AE(nn.Module):
         self.final_en = final_en
 
         self.NetEncoder = nn.Sequential(
-            nn.Linear(net_xn, 600),
+            nn.Linear(net_xn, 700),
+            nn.BatchNorm1d(700),
             nn.ReLU(),
-            nn.Linear(600, 300),
+            nn.Linear(700, 500),
+            # nn.BatchNorm1d(500),
+            nn.ReLU(),
+            nn.Linear(500, 300),
+            # nn.BatchNorm1d(300),
             nn.ReLU(),
             nn.Linear(300, final_en)
         )
         self.NetDecoder = nn.Sequential(
             nn.ReLU(),
             nn.Linear(final_en, 300),
+            nn.BatchNorm1d(300),
             nn.ReLU(),
-            nn.Linear(300, 600),
+            nn.Linear(300, 500),
+            # nn.BatchNorm1d(500),
             nn.ReLU(),
-            nn.Linear(600, net_xn),
+            nn.Linear(500, 700),
+            # nn.BatchNorm1d(700),
+            nn.ReLU(),
+            nn.Linear(700, net_xn),
         )
 
         self.NodeEncoder = nn.Sequential(
-            nn.Linear(node_xn, 600),
+            nn.Linear(node_xn, 450),
+            nn.BatchNorm1d(450),
             nn.ReLU(),
-            nn.Linear(600, 300),
+            nn.Linear(450, 300),
+            # nn.BatchNorm1d(300),
             nn.ReLU(),
-            nn.Linear(300, final_en)
+            nn.Linear(300, 200),
+            # nn.BatchNorm1d(200),
+            nn.ReLU(),
+            nn.Linear(200, final_en)
         )
         self.NodeDecoder = nn.Sequential(
             nn.ReLU(),
-            nn.Linear(final_en, 300),
+            nn.Linear(final_en, 200),
+            nn.BatchNorm1d(200),
             nn.ReLU(),
-            nn.Linear(300, 600),
+            nn.Linear(200, 300),
+            # nn.BatchNorm1d(300),
             nn.ReLU(),
-            nn.Linear(600, node_xn),
+            nn.Linear(300, 450),
+            # nn.BatchNorm1d(450),
+            nn.ReLU(),
+            nn.Linear(450, node_xn),
         )
 
     def forward_net(self, net_x):
@@ -47,7 +67,7 @@ class AE(nn.Module):
     
     def forward_node(self, node_x):
         node_e = self.NodeEncoder(node_x)
-        node_x_rec = self.NodeEncoder(node_e)
+        node_x_rec = self.NodeDecoder(node_e)
         return node_e, node_x_rec
 
     def forward(self, net_x, node_x):
